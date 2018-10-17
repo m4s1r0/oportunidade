@@ -1,0 +1,85 @@
+﻿@model IEnumerable<PostViewModel>
+
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Feeds Minuto Seguros</h1>
+    <p>Esta é a quantificação das 10 palavras mais correntes nos posts do blog https://www.minutoseguros.com.br/blog</p>
+    <a class="btn btn-primary" href="https://www.minutoseguros.com.br/blog">Visitar o blog <span class="glyphicon glyphicon-link"></span></a>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Postagens</h2>
+        <table class="table table-striped">
+            <tbody>
+                @{
+                    foreach (var post in Model)
+                    {
+                        var g = Guid.NewGuid().ToString();
+                        var headerPnlId = "header-" + g;
+                        var wordsPnlId = "words-" + g;
+                        <text>
+                            <tr>
+                                <td>
+                                    <h4>@post.Title</h4>
+                                    <div>
+                                        <span class="glyphicon glyphicon-time"></span> Data da publicação: @post.PublishDate.ToString("dd/MM/yyyy hh:mm")
+                                    </div>
+                                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingOne">
+                                                <h4 class="panel-title">
+                                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#@headerPnlId" aria-expanded="false" aria-controls="collapseOne">
+                                                        <span class="glyphicon glyphicon-align-left"></span> Texto - <strong>@post.Summary.QtdWords palavra(s)</strong>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="@headerPnlId" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                                <div class="panel-body">
+                                                    @Html.Raw(post.Content)
+                                                    <p>@post.Creator</p>
+                                                    <p><a href="@post.Link">@post.Link</a></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingTwo">
+                                                <h4 class="panel-title">
+                                                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#@wordsPnlId" aria-expanded="false" aria-controls="collapseTwo">
+                                                        <span class="glyphicon glyphicon-tags"></span> Principais palavras
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="@wordsPnlId" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                <div class="panel-body">
+                                                    <ul class="list-group col-sm-4">
+                                                        @{
+                                                        foreach (var w in post.Summary.Words)
+                                                        {
+                                                            <text>
+                                                            <li class="list-group-item">
+                                                                <span class="badge">@w.Occurrences</span>
+                                                                @w.Value
+                                                            </li>
+                                </text>
+                            }
+                                                        }
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </text>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
